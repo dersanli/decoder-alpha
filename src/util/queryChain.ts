@@ -8,5 +8,12 @@ const walletAddress = '0x248Dd3836E2A8B56279C04addC2D11F3c2497836';
 const provider = new ethers.JsonRpcProvider(rpcEndpoint);
 const contract = new ethers.Contract(contractAddress, abi, provider);
 
-export const getBalanceOfContract = async () =>
-    (await contract.balanceOf(walletAddress)).toString();
+export const getBalanceOfContract = async () => {
+    try {
+        const balance = await contract.balanceOf(walletAddress);
+        return ethers.formatEther(balance);
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
